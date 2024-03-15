@@ -1,4 +1,4 @@
-module VendettaTweakC {
+module PyoncordTweakC {
     umbrella "."
     export *
 }

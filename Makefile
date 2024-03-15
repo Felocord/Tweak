@@ -7,13 +7,13 @@ endif
 
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME = VendettaTweak
+TWEAK_NAME = PyoncordTweak
 
-VendettaTweak_FILES = $(shell find Sources/VendettaTweak -name '*.swift') $(shell find Sources/VendettaTweakC -name '*.m' -o -name '*.c' -o -name '*.mm' -o -name '*.cpp')
-VendettaTweak_SWIFTFLAGS = -ISources/VendettaTweakC/include
-VendettaTweak_CFLAGS = -fobjc-arc -ISources/VendettaTweakC/include
+PyoncordTweak_FILES = $(shell find Sources/PyoncordTweak -name '*.swift') $(shell find Sources/PyoncordTweakC -name '*.m' -o -name '*.c' -o -name '*.mm' -o -name '*.cpp')
+PyoncordTweak_SWIFTFLAGS = -ISources/PyoncordTweakC/include
+PyoncordTweak_CFLAGS = -fobjc-arc -ISources/PyoncordTweakC/include
 
-VendettaTweak_BUNDLE_NAME = VendettaPatches
-VendettaTweak_BUNDLE_RESOURCE_DIRS = VendettaXposed/App/src/main/assets/js Resources
+PyoncordTweak_BUNDLE_NAME = PyoncordPatches
+PyoncordTweak_BUNDLE_RESOURCE_DIRS = Resources
 
 include $(THEOS_MAKE_PATH)/tweak.mk

@@ -1,6 +1,6 @@
-Package: dev.beefers.vendetta
-Name: Vendetta
-Version: 0.0.2
+Package: com.pyoncord.bunny
+Name: bunny
+Version: 0.0.1
 Architecture: iphoneos-arm
 Description: A mod for Discord's mobile apps.
 Maintainer: FieryFlames

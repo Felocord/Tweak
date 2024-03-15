@@ -13,21 +13,22 @@ struct CustomLoadUrl: Codable {
 struct LoaderConfig: Codable {
   let customLoadUrl: CustomLoadUrl
   let loadReactDevTools: Bool
+  var loadPyoncord: Bool? = nil
 }
 
 let defaultLoaderConfig = LoaderConfig(
   customLoadUrl: CustomLoadUrl(
     enabled: false,
-    url: URL(string: "http://localhost:4040/vendetta.js")!
+    url: URL(string: "http://localhost:4040/bunny.js")!
   ),
   loadReactDevTools: false
 )
 
-let documentDirectory = getDocumentDirectory()
-let loaderConfigUrl = documentDirectory.appendingPathComponent("vendetta_loader.json")
+let pyoncordDirectory = getPyoncordDirectory()
+let loaderConfigUrl = pyoncordDirectory.appendingPathComponent("loader.json")
 
 func getLoaderConfig() -> LoaderConfig {
-  os_log("Getting loader config", log: vendettaLog, type: .debug)
+  os_log("Getting loader config", log: pyoncordLog, type: .debug)
   let fileManager = FileManager.default
 
   do {
@@ -35,24 +36,15 @@ func getLoaderConfig() -> LoaderConfig {
       let data = try Data(contentsOf: loaderConfigUrl)
       let loaderConfig = try JSONDecoder().decode(LoaderConfig.self, from: data)
 
-      os_log("Got loader config", log: vendettaLog, type: .debug)
+      os_log("Got loader config", log: pyoncordLog, type: .debug)
 
       return loaderConfig
     } else {
       throw LoaderConfigError.doesNotExist
     }
   } catch {
-    os_log("Couldn't get loader config", log: vendettaLog, type: .error)
-    createLoaderConfig()
+    os_log("Couldn't get loader config", log: pyoncordLog, type: .error)
 
     return defaultLoaderConfig
   }
-}
-
-func createLoaderConfig() {
-  do {
-    let encodedConfig = try JSONEncoder().encode(defaultLoaderConfig)
-    try encodedConfig.write(to: loaderConfigUrl)
-    os_log("Created loader config", log: vendettaLog, type: .debug)
-  } catch {}
 }

@@ -1,6 +1,8 @@
 name: Build
 
-on: [push]
+on: 
+  push:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -30,7 +32,7 @@ jobs:
         with:
           orion: "true"
 
-      - name: Build package
+      - name: Build rootful package
         run: |
           rm -f packages/*
           make package FINALPACKAGE=1
@@ -38,7 +40,7 @@ jobs:
       - name: Upload package
         uses: actions/upload-artifact@v3
         with:
-          name: "Package built by ${{ matrix.os }}"
+          name: "Rootful package built by ${{ matrix.os }}"
           path: ${{ github.workspace }}/packages/*-arm.deb
 
       - name: Build rootless package
