@@ -1,20 +1,27 @@
-name: Build
+name: Build Pyoncord
 
-on: 
-  push:
-  workflow_dispatch:
+on:
+   workflow_dispatch:
+    inputs:
+        ipa_url:
+            description: "Direct link to the decrypted IPA"
+            default: ""
+            required: true
+            type: string
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest]
+  build-tweak:
+    runs-on: macos-14
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
+    
+      - name: Xcode Select Version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.1.0'
 
       - name: Check cache
         run: |
@@ -22,34 +29,66 @@ jobs:
 
       - name: Use cache
         id: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/theos
           key: ${{ runner.os }}-${{ env.upstream_heads }}
 
       - name: Prepare Theos
-        uses: Randomblock1/theos-action@v1.3
-        with:
-          orion: "true"
+        uses: Randomblock1/theos-action@v1
 
-      - name: Build rootful package
+      - name: Build packages
         run: |
-          rm -f packages/*
-          make package FINALPACKAGE=1
+          export PATH="$(brew --prefix make)/libexec/gnubin:$PATH"
+          export THEOS="${{ github.workspace }}/theos"
+          rm -rf packages && make clean && make package FINALPACKAGE=1 && make package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
 
       - name: Upload package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: "Rootful package built by ${{ matrix.os }}"
+          name: "package"
           path: ${{ github.workspace }}/packages/*-arm.deb
 
-      - name: Build rootless package
-        run: |
-          rm -f packages/*
-          make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
-
       - name: Upload rootless package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: "Rootless package built by ${{ matrix.os }}"
+          name: "rootless package"
           path: ${{ github.workspace }}/packages/*-arm64.deb
+
+  build-ipa:
+    runs-on: macos-14
+    needs: build-tweak
+
+    steps:
+      - name: Xcode Select Version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.1.0'
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+
+      - name: Download and Unzip Orion
+        run: |
+          curl -L -o Orion.zip https://github.com/theos/orion/releases/download/1.0.1/Orion_1.0.1.zip
+          unzip Orion.zip
+
+      - name: Download Discord IPA
+        run: |
+          curl -L -o discord.ipa ${{ github.event.inputs.ipa_url }}
+
+      - name: Inject tweak
+        run: |
+          mkdir -p ${{ github.workspace }}/build
+          git clone https://github.com/Al4ise/Azule.git
+          ./Azule/azule -i discord.ipa -o ${{ github.workspace }}/build -f ${{ github.workspace }}/dev.theos.orion14_1.0.1_iphoneos-arm.deb ${{ github.workspace }}/com.pyoncord.bunny_0.0.1_iphoneos-arm.deb
+          mv "${{ github.workspace }}/build/"*.ipa "${{ github.workspace }}/build/Pyoncord.ipa"
+
+      - name: Upload Pyoncord.ipa as artifact
+        uses: actions/upload-artifact@v4
+        with:
+            name: ipa
+            path: ${{ github.workspace }}/build/Pyoncord.ipa
+     
