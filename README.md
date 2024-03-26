@@ -3,23 +3,20 @@
 
 # PyoncordTweak
 
-A rootful/rootless tweak to inject [Bunny](https://github.com/pyoncord/Bunny) into Discord. Forked [VendettaTweak](https://github.com/vendetta-mod/VendettaTweak), modified to match with [PyoncordXposed](https://github.com/pyoncord/PyoncordXposed) behavior. There are still slight differences between these two, and this tweak may be missing some loader features.
+A rootful/rootless tweak to inject [Pyoncord](https://github.com/pyoncord/Pyoncord) into Discord. Forked [VendettaTweak](https://github.com/vendetta-mod/VendettaTweak), modified to match with [PyoncordXposed](https://github.com/pyoncord/PyoncordXposed) behavior. There are still slight differences between these two, and this tweak may be missing some loader features.
 
 ## Installation
 
+Builds can be found in the [Actions](https://github.com/pyoncord/PyoncordTweak/actions/workflows/build.yml) tab.
+
 ### Jailbroken (Rootful/Rootless)
 
-1. Install Orion runtime via your preferred package manager, by adding `https://repo.chariz.com/` to your sources, then finding `Orion Runtime`.
-1. Install Bunny by downloading the appropriate `.deb` file (or by building your own, see [Building PyoncordTweak locally](#building-pyoncordtweak-locally)). Use the file ending in `arm.deb` for rootful jailbreaks, and the file ending in `arm64.deb` for rootless jailbreaks.
+1. Install the Orion runtime via your preferred package manager, by adding `https://repo.chariz.com/` to your sources, then finding `Orion Runtime`.
+1. Install Pyoncord by downloading the appropriate `.deb` file (or by building your own, see [Building PyoncordTweak locally](#building-pyoncordtweak-locally)). Use the file ending in `arm.deb` for rootful jailbreaks, and the file ending in `arm64.deb` for rootless jailbreaks.
 
 ### Non-Jailbroken
 
-1. Download Orion from [here](https://github.com/theos/orion/releases). You will need the `deb` file ending in `arm.deb` NOT `arm64.deb`.
-1. Download the rootful PyoncordTweak `.deb` file (file ending in `arm.deb`) or build your own by following the [Building PyoncordTweak locally](#building-pyoncordtweak-locally) steps.
-1. Clone [azule](https://github.com/Al4ise/Azule/tree/main) into a folder and `cd` into it.
-1. Extract or obtain a decrypted Discord IPA. To extract the IPA from a jailbroken iDevice, we recommend [bagbak](https://github.com/ChiChou/bagbak).
-1. Run `./azule -i <path to decrypted IPA> -o <path to output folder> -f <path to Orion deb> <path to PyoncordTweak deb>`. Make sure to provide the full paths to the files (you cannot use relative paths unfortunately). Example: `./azule -i ~/Users/vendetta/IPA/Discord.ipa -o ~/Users/vendetta/IPA/outputs -f ~/Users/vendetta/IPA/dev.theos.orion14_1.0.1_iphoneos-arm.deb ~/Users/vendetta/IPA/com.pyoncord.bunny_0.0.1_iphoneos-arm.deb`
-1. Install the generated IPA using your preferred sideloading method (at the time of writing this, only Sideloadly works).
+1. Download and install `Pyoncord.ipa` using your preferred sideloading method.
 
 ## Building PyoncordTweak locally
 

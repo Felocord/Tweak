@@ -14,14 +14,10 @@ jobs:
     runs-on: macos-14
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           submodules: true
-    
-      - name: Xcode Select Version
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '15.1.0'
 
       - name: Check cache
         run: |
@@ -60,11 +56,9 @@ jobs:
     needs: build-tweak
 
     steps:
-      - name: Xcode Select Version
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '15.1.0'
-
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -79,11 +73,18 @@ jobs:
         run: |
           curl -L -o discord.ipa ${{ github.event.inputs.ipa_url }}
 
+      - name: Extract Package and Version
+        run: |
+          PACKAGE=$(grep '^Package:' control | cut -d ' ' -f 2)
+          VERSION=$(grep '^Version:' control | cut -d ' ' -f 2)
+          DEB_FILE_NAME="${PACKAGE}_${VERSION}_iphoneos-arm.deb"
+          echo "DEB_FILE_NAME=$DEB_FILE_NAME" >> $GITHUB_ENV
+
       - name: Inject tweak
         run: |
           mkdir -p ${{ github.workspace }}/build
           git clone https://github.com/Al4ise/Azule.git
-          ./Azule/azule -i discord.ipa -o ${{ github.workspace }}/build -f ${{ github.workspace }}/dev.theos.orion14_1.0.1_iphoneos-arm.deb ${{ github.workspace }}/com.pyoncord.bunny_0.0.1_iphoneos-arm.deb
+          ./Azule/azule -i discord.ipa -o ${{ github.workspace }}/build -f ${{ github.workspace }}/dev.theos.orion14_1.0.1_iphoneos-arm.deb ${{ github.workspace }}/${{ env.DEB_FILE_NAME }}
           mv "${{ github.workspace }}/build/"*.ipa "${{ github.workspace }}/build/Pyoncord.ipa"
 
       - name: Upload Pyoncord.ipa as artifact
@@ -91,4 +92,3 @@ jobs:
         with:
             name: ipa
             path: ${{ github.workspace }}/build/Pyoncord.ipa
-     
