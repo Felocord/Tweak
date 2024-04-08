@@ -9,7 +9,8 @@ on:
             required: true
             type: string
 
-env: [upstream_heads]
+env: 
+  upstream_heads:
 
 jobs:
   build-tweak:

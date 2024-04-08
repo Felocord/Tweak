@@ -9,7 +9,11 @@ on:
             required: true
             type: string
 
-env: [DISCORD_VERSION, upstream_heads, DEB_FILE_NAME, ROOTLESS_DEB_FILE_NAME]
+env: 
+  DISCORD_VERSION:
+  upstream_heads:
+  DEB_FILE_NAME:
+  ROOTLESS_DEB_FILE_NAME:
 
 jobs:
   build-tweak:
