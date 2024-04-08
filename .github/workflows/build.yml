@@ -9,6 +9,8 @@ on:
             required: true
             type: string
 
+env: [upstream_heads]
+
 jobs:
   build-tweak:
     runs-on: macos-14
@@ -73,6 +75,21 @@ jobs:
         run: |
           curl -L -o discord.ipa ${{ github.event.inputs.ipa_url }}
 
+          - name: Make patcher directory
+          run: |
+            mkdir patcher
+  
+      - name: Download IPA patcher
+        working-directory: patcher
+        run: |
+          curl -L https://github.com/amsyarasyiq/pyoncord-ipa-patcher/releases/download/release-pyon/patcher.mac-amd64 -o ${{ github.workspace }}/patcher
+          chmod +x patcher
+
+      - name: Download ipa icons
+        working-directory: patcher
+        run: |
+          curl -L -o ipa-icons.zip https://raw.githubusercontent.com/pyoncord/assets/main/ipa-icons.zip
+
       - name: Extract Package and Version
         run: |
           PACKAGE=$(grep '^Package:' control | cut -d ' ' -f 2)
@@ -87,6 +104,12 @@ jobs:
           ./Azule/azule -i discord.ipa -o ${{ github.workspace }}/build -f ${{ github.workspace }}/dev.theos.orion14_1.0.1_iphoneos-arm.deb ${{ github.workspace }}/${{ env.DEB_FILE_NAME }}
           mv "${{ github.workspace }}/build/"*.ipa "${{ github.workspace }}/build/Pyoncord.ipa"
 
+      - name: Patch Discord
+        working-directory: patcher
+        run : |
+          ./patcher -d ${{ github.workspace }}/build/Pyoncord.ipa -i ./ipa-icons.zip
+          mv -f ./Pyoncord.ipa "${{ github.workspace }}/build/Pyoncord.ipa"
+  
       - name: Upload Pyoncord.ipa as artifact
         uses: actions/upload-artifact@v4
         with:
