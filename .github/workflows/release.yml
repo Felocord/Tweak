@@ -86,10 +86,10 @@ jobs:
       - name: Download IPA patcher
         working-directory: patcher
         run: |
-          curl -L https://github.com/amsyarasyiq/pyoncord-ipa-patcher/releases/download/release-pyon/patcher.mac-amd64 -o ${{ github.workspace }}/patcher
+          curl -L -o patcher https://github.com/amsyarasyiq/pyoncord-ipa-patcher/releases/download/release-pyon/patcher.mac-amd64
           chmod +x patcher
 
-      - name: Download ipa icons
+      - name: Download IPA icons
         working-directory: patcher
         run: |
           curl -L -o ipa-icons.zip https://raw.githubusercontent.com/pyoncord/assets/main/ipa-icons.zip
