@@ -11,6 +11,7 @@ on:
 
 env: 
   upstream_heads:
+  DEB_FILE_NAME:
 
 jobs:
   build-tweak:
