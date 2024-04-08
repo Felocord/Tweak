@@ -75,9 +75,9 @@ jobs:
         run: |
           curl -L -o discord.ipa ${{ github.event.inputs.ipa_url }}
 
-          - name: Make patcher directory
-          run: |
-            mkdir patcher
+      - name: Make patcher directory
+        run: |
+          mkdir patcher
   
       - name: Download IPA patcher
         working-directory: patcher
