@@ -3,7 +3,7 @@
   "apps": [
     {
       "name": "Pyoncord",
-      "bundleIdentifier": "com.pyoncord.pyoncord",
+      "bundleIdentifier": "io.github.pyoncord.app",
       "developerName": "Pylix",
       "iconURL": "",
       "localizedDescription": "A client mod for Discord",

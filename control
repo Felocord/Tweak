@@ -1,4 +1,4 @@
-Package: com.pyoncord.pyoncord
+Package: io.github.pyoncord.app
 Name: pyoncord
 Version: 0.0.1
 Architecture: iphoneos-arm
