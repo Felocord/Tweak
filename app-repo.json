@@ -3,7 +3,7 @@
   "apps": [
     {
       "name": "Pyoncord",
-      "bundleIdentifier": "io.github.pyoncord.app",
+      "bundleIdentifier": "com.hammerandchisel.discord",
       "developerName": "Pylix",
       "iconURL": "",
       "localizedDescription": "A client mod for Discord",
