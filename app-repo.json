@@ -1,11 +1,13 @@
 {
   "name": "Pyoncord App Repo",
+  "identifier": "io.github.pyoncord.repo",
+  "iconURL": "https://pyoncord.github.io/assets/icon-altstore.png",
   "apps": [
     {
       "name": "Pyoncord",
       "bundleIdentifier": "com.hammerandchisel.discord",
       "developerName": "Pylix",
-      "iconURL": "",
+      "iconURL": "https://pyoncord.github.io/assets/icon-altstore.png",
       "localizedDescription": "A client mod for Discord",
       "subtitle": "A client mod for Discord",
       "tintColor": "7289da",
