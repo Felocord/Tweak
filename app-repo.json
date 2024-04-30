@@ -4,7 +4,7 @@
   "iconURL": "https://pyoncord.github.io/assets/icon-altstore.png",
   "apps": [
     {
-      "name": "Pyoncord",
+      "name": "Bunny",
       "bundleIdentifier": "com.hammerandchisel.discord",
       "developerName": "Pylix",
       "iconURL": "https://pyoncord.github.io/assets/icon-altstore.png",
