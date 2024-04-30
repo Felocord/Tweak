@@ -13,6 +13,12 @@
       "tintColor": "7289da",
       "versions": [
         {
+          "version": "226.1",
+          "date": "2024-04-30",
+          "size": 102705408,
+          "downloadURL": "https://github.com/pyoncord/PyoncordTweak/releases/download/v226.1/Pyoncord.ipa"
+        },
+        {
           "version": "223.0",
           "date": "2024-04-08",
           "size": 106082919,
