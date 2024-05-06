@@ -6,6 +6,10 @@ A rootful/rootless tweak to inject [Bunny](https://github.com/pyoncord/Bunny) in
 
 Builds can be found in the [Releases](https://github.com/pyoncord/BunnyTweak/releases/latest) tab.
 
+> [!NOTE]
+> Raw decrypted IPAs which are used to provide prepatched IPAs are sourced from the [Enmity](https://github.com/enmity-mod/) community. These raw decrypted IPAs are also used throughout Enmity related projects such as [enmity-mod/tweak](https://github.com/enmity-mod/tweak/) and [acquitelol/rosiecord](https://github.com/acquitelol/rosiecord).\
+> All credits are attributed to the owner(s) of the raw IPAs.
+
 ### Jailbroken (Rootful/Rootless)
 
 1. Install the Orion runtime via your preferred package manager, by adding `https://repo.chariz.com/` to your sources, then finding `Orion Runtime`.
