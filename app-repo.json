@@ -13,6 +13,12 @@
       "tintColor": "7289da",
       "versions": [
         {
+          "version": "229.0",
+          "date": "2024-05-16",
+          "size": 103776118,
+          "downloadURL": "https://github.com/pyoncord/BunnyTweak/releases/download/v229.0/Bunny.ipa"
+        },
+        {
           "version": "226.1",
           "date": "2024-04-30",
           "size": 102705408,
@@ -25,7 +31,8 @@
           "downloadURL": "https://github.com/pyoncord/BunnyTweak/releases/download/v223.0/Pyoncord.ipa"
         }
       ],
-      "appPermissions": {}
+      "appPermissions": {},
+      "downloadURL": "$DOWNLOAD_URL"
     }
   ],
   "news": []
