@@ -25,7 +25,7 @@ let pyoncordDirectory = getPyoncordDirectory()
 let loaderConfigUrl = pyoncordDirectory.appendingPathComponent("loader.json")
 
 func getLoaderConfig() -> LoaderConfig {
-  os_log("Getting loader config", log: pyoncordLog, type: .debug)
+  os_log("Getting loader config", log: bunnyLog, type: .debug)
   let fileManager = FileManager.default
 
   do {
@@ -33,14 +33,14 @@ func getLoaderConfig() -> LoaderConfig {
       let data = try Data(contentsOf: loaderConfigUrl)
       let loaderConfig = try JSONDecoder().decode(LoaderConfig.self, from: data)
 
-      os_log("Got loader config", log: pyoncordLog, type: .debug)
+      os_log("Got loader config", log: bunnyLog, type: .debug)
 
       return loaderConfig
     } else {
       throw LoaderConfigError.doesNotExist
     }
   } catch {
-    os_log("Couldn't get loader config", log: pyoncordLog, type: .error)
+    os_log("Couldn't get loader config", log: bunnyLog, type: .error)
 
     return defaultLoaderConfig
   }

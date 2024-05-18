@@ -1,11 +1,11 @@
 Package: io.github.pyoncord.app
 Name: Bunny
-Version: 0.2.0
+Version: 0.3.0
 Architecture: iphoneos-arm
 Description: A mod for Discord's mobile apps.
 Maintainer: Pylix
-Author: FieryFlames
-Icon: https://avatars.githubusercontent.com/u/112445065
+Author: Pylix, FieryFlames
+Icon: https://avatars.githubusercontent.com/u/132727175
 Section: Tweaks
 Depends: ${ORION}, firmware (>= 13.0)
 Conflicts: app.enmity, mod.vendetta
