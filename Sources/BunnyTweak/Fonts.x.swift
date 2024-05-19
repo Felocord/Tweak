@@ -16,7 +16,11 @@ var fontMap: [String: String] = [:]
 class FontsHook: ClassHook<UIFont> {
   class func fontWithName(_ name: String, size: CGFloat) -> UIFont {
     if let replacementName = fontMap[name] {
-      return UIFont(name: replacementName, size: size)!
+      let replacementDescriptor = UIFontDescriptor(name: replacementName, size: size)
+      let fallbackDescriptor = replacementDescriptor.addingAttributes([.name: [name]])
+      let finalDescriptor = replacementDescriptor.addingAttributes([.cascadeList: [fallbackDescriptor]])
+
+      return orig.fontWithDescriptor(finalDescriptor, size: size)
     }
 
     return orig.fontWithName(name, size: size)
@@ -24,9 +28,9 @@ class FontsHook: ClassHook<UIFont> {
   class func fontWithDescriptor(_ descriptor: UIFontDescriptor, size: CGFloat) -> UIFont {
     if let replacementName = fontMap[descriptor.postscriptName] {
       let replacementDescriptor = UIFontDescriptor(name: replacementName, size: size)
-        .addingAttributes(descriptor.fontAttributes)
+      let finalDescriptor = replacementDescriptor.addingAttributes([.cascadeList: [descriptor]])
 
-      return orig.fontWithDescriptor(replacementDescriptor, size: size)
+      return orig.fontWithDescriptor(finalDescriptor, size: size)
     }
     
     return orig.fontWithDescriptor(descriptor, size: size)
