@@ -37,8 +37,7 @@
           "downloadURL": "https://github.com/pyoncord/BunnyTweak/releases/download/v223.0/Pyoncord.ipa"
         }
       ],
-      "appPermissions": {},
-      "downloadURL": "https://github.com/pyoncord/BunnyTweak/releases/download/v230.0/Bunny.ipa"
+      "appPermissions": {}
     }
   ],
   "news": []
