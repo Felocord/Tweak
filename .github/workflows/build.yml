@@ -1,4 +1,4 @@
-name: Build
+name: Release
 
 on:
    workflow_dispatch:
@@ -8,6 +8,9 @@ on:
             default: ""
             required: true
             type: string
+
+env:
+  GH_TOKEN: ${{ github.token }}
 
 jobs:
   build-tweak:
@@ -23,13 +26,13 @@ jobs:
         run: |
           set -e
           
-          status_code=$(curl -s -o /dev/null -w "%{http_code}" https://api.github.com/repos/${{ github.repository }}/releases/latest)
-          if [ "$status_code" -ne 200 ]; then
-            echo "No releases found or request failed"
+          release_info=$(gh api --header 'Accept: application/vnd.github+json' repos/${{ github.repository }}/releases/latest)
+          status_code=$(echo $release_info | jq -r ".status")
+          if [ "$status_code" != "null" ]; then
+            echo "No releases found or request failed, status code: $status_code"
             echo "DEB_DOWNLOADED=false" >> $GITHUB_ENV
             exit 0
           fi
-          release_info=$(curl -s https://api.github.com/repos/${{ github.repository }}/releases/latest)
           release_version=$(echo "$release_info" | jq -r '.assets[] | select(.name | contains("iphoneos-arm.deb")) | .name' | grep -o '_[0-9.]\+_' | tr -d '_')
           control_version=$(grep '^Version:' control | cut -d ' ' -f 2)
           if [ "$release_version" = "$control_version" ]; then
@@ -99,8 +102,11 @@ jobs:
 
       - name: Download and Unzip Orion
         run: |
-          curl -L -o Orion.zip $(curl -s https://api.github.com/repos/theos/orion/releases/latest | jq -r '.assets[0].browser_download_url')
+          latest_release_info=$(gh api --header 'Accept: application/vnd.github+json' repos/theos/orion/releases/latest)
+          download_url=$(echo $latest_release_info | jq -r '.assets[0].browser_download_url')
+          curl -L -o Orion.zip "$download_url"
           unzip Orion.zip
+
       - name: Download Discord IPA
         run: |
           curl -L -o discord.ipa ${{ github.event.inputs.ipa_url }}
@@ -110,7 +116,7 @@ jobs:
       - name: Download IPA patcher
         working-directory: patcher
         run: |
-          curl -L -o patcher https://github.com/amsyarasyiq/bunny-ipa-patcher/releases/download/release-pyon/patcher.macos-arm64
+          curl -L -o patcher https://github.com/amsyarasyiq/bunny-ipa-patcher/releases/download/release-pyon/patcher.mac-amd64
           chmod +x patcher
 
       - name: Download IPA icons
