@@ -65,23 +65,23 @@ let swiftFlags: [String] = libFlags + [
 ]
 
 let package = Package(
-    name: "BunnyTweak",
+    name: "FelocordTweak",
     platforms: [.iOS(deploymentTarget)],
     products: [
         .library(
-            name: "BunnyTweak",
-            targets: ["BunnyTweak"]
+            name: "FelocordTweak",
+            targets: ["FelocordTweak"]
         ),
     ],
     targets: [
         .target(
-            name: "BunnyTweakC",
+            name: "FelocordTweakC",
             cSettings: [.unsafeFlags(cFlags)],
             cxxSettings: [.unsafeFlags(cxxFlags)]
         ),
         .target(
-            name: "BunnyTweak",
-            dependencies: ["BunnyTweakC"],
+            name: "FelocordTweak",
+            dependencies: ["FelocordTweakC"],
             swiftSettings: [.unsafeFlags(swiftFlags)]
         ),
     ]

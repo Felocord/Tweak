@@ -7,13 +7,13 @@ endif
 
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME = BunnyTweak
+TWEAK_NAME = FelocordTweak
 
-BunnyTweak_FILES = $(shell find Sources/BunnyTweak -name '*.swift') $(shell find Sources/BunnyTweakC -name '*.m' -o -name '*.c' -o -name '*.mm' -o -name '*.cpp')
-BunnyTweak_SWIFTFLAGS = -ISources/BunnyTweakC/include
-BunnyTweak_CFLAGS = -fobjc-arc -ISources/BunnyTweakC/include
+FelocordTweak_FILES = $(shell find Sources/FelocordTweak -name '*.swift') $(shell find Sources/FelocordTweakC -name '*.m' -o -name '*.c' -o -name '*.mm' -o -name '*.cpp')
+FelocordTweak_SWIFTFLAGS = -ISources/FelocordTweakC/include
+FelocordTweak_CFLAGS = -fobjc-arc -ISources/FelocordTweakC/include
 
-BunnyTweak_BUNDLE_NAME = BunnyPatches
-BunnyTweak_BUNDLE_RESOURCE_DIRS = Resources
+FelocordTweak_BUNDLE_NAME = FelocordPatches
+FelocordTweak_BUNDLE_RESOURCE_DIRS = Resources
 
 include $(THEOS_MAKE_PATH)/tweak.mk

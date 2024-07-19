@@ -1,13 +1,13 @@
 {
-  "name": "Pyoncord App Repo",
-  "identifier": "io.github.pyoncord.repo",
-  "iconURL": "https://pyoncord.github.io/assets/icon-altstore.png",
+  "name": "Felitendo App Repo",
+  "identifier": "io.github.felitendo.repo",
+  "iconURL": "https://felitendo.github.io/assets/icon-altstore.png",
   "apps": [
     {
-      "name": "Bunny",
+      "name": "Felocord",
       "bundleIdentifier": "com.hammerandchisel.discord",
       "developerName": "Pylix",
-      "iconURL": "https://pyoncord.github.io/assets/icon-altstore.png",
+      "iconURL": "https://felitendo.github.io/assets/icon-altstore.png",
       "localizedDescription": "A client mod for Discord",
       "subtitle": "A client mod for Discord",
       "tintColor": "7289da",
@@ -16,43 +16,43 @@
           "version": "237.0",
           "date": "2024-07-13",
           "size": 114323285,
-          "downloadURL": "https://github.com/pyoncord/BunnyTweak/releases/download/v237.0/Bunny.ipa"
+          "downloadURL": "https://github.com/felitendo/FelocordTweak/releases/download/v237.0/Felocord.ipa"
         },
         {
           "version": "235.0",
           "date": "2024-06-27",
           "size": 112173273,
-          "downloadURL": "https://github.com/pyoncord/BunnyTweak/releases/download/v235.0/Bunny.ipa"
+          "downloadURL": "https://github.com/felitendo/FelocordTweak/releases/download/v235.0/Felocord.ipa"
         },
         {
           "version": "234.0",
           "date": "2024-06-24",
           "size": 111671815,
-          "downloadURL": "https://github.com/pyoncord/BunnyTweak/releases/download/v234.0/Bunny.ipa"
+          "downloadURL": "https://github.com/felitendo/FelocordTweak/releases/download/v234.0/Felocord.ipa"
         },
         {
           "version": "230.0",
           "date": "2024-05-18",
           "size": 102457139,
-          "downloadURL": "https://github.com/pyoncord/BunnyTweak/releases/download/v230.0/Bunny.ipa"
+          "downloadURL": "https://github.com/felitendo/FelocordTweak/releases/download/v230.0/Felocord.ipa"
         },
         {
           "version": "229.0",
           "date": "2024-05-16",
           "size": 103776118,
-          "downloadURL": "https://github.com/pyoncord/BunnyTweak/releases/download/v229.0/Bunny.ipa"
+          "downloadURL": "https://github.com/felitendo/FelocordTweak/releases/download/v229.0/Felocord.ipa"
         },
         {
           "version": "226.1",
           "date": "2024-04-30",
           "size": 102705408,
-          "downloadURL": "https://github.com/pyoncord/BunnyTweak/releases/download/v226.1/Pyoncord.ipa"
+          "downloadURL": "https://github.com/felitendo/FelocordTweak/releases/download/v226.1/Felitendo.ipa"
         },
         {
           "version": "223.0",
           "date": "2024-04-08",
           "size": 106082919,
-          "downloadURL": "https://github.com/pyoncord/BunnyTweak/releases/download/v223.0/Pyoncord.ipa"
+          "downloadURL": "https://github.com/felitendo/FelocordTweak/releases/download/v223.0/Felitendo.ipa"
         }
       ],
       "appPermissions": {}
