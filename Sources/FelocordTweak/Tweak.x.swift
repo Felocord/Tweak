@@ -53,7 +53,7 @@ class LoadHook: ClassHook<RCTCxxBridge> {
       bundleUrl = loaderConfig.customLoadUrl.url
     } else {
       bundleUrl = URL(
-        string: "https://raw.githubusercontent.com/felitendo/felocord-builds/main/felocord.js")!
+        string: "https://raw.githubusercontent.com/Felocord/builds/main/felocord.js")!
     }
 
     os_log("Fetching JS bundle", log: felocordLog, type: .info)
