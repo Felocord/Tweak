@@ -1,6 +1,6 @@
 # FelocordTweak
 
-Tweak to inject [Felocord](https://github.com/felitendo/Felocord) into Discord. Forked [VendettaTweak](https://github.com/vendetta-mod/VendettaTweak), modified to match with [FelocordXposed](https://github.com/felitendo/FelocordXposed) behavior. There are still slight differences between these two, and this tweak may be missing some loader features.
+Tweak to inject [Felocord](https://github.com/Felocord/Felocord) into Discord. Forked [VendettaTweak](https://github.com/vendetta-mod/VendettaTweak), modified to match with [FelocordXposed](https://github.com/Felocord/Xposed) behavior. There are still slight differences between these two, and this tweak may be missing some loader features.
 
 > [!NOTE]
 > As of right now this tweak does not encompass some functionalities when running in a jailed environment with a wildcard certificate \
@@ -10,7 +10,7 @@ Tweak to inject [Felocord](https://github.com/felitendo/Felocord) into Discord. 
 
 ## Installation
 
-Builds can be found in the [Releases](https://github.com/felitendo/FelocordTweak/releases/latest) tab.
+Builds can be found in the [Releases](https://github.com/Felocord/Tweak/releases/latest) tab.
 
 > [!NOTE]
 > Raw decrypted IPAs which are used to provide prepatched IPAs are sourced from the [Enmity](https://github.com/enmity-mod/) community. These raw decrypted IPAs are also used throughout Enmity related projects such as [enmity-mod/tweak](https://github.com/enmity-mod/tweak/) and [acquitelol/rosiecord](https://github.com/acquitelol/rosiecord).\
@@ -29,7 +29,7 @@ Builds can be found in the [Releases](https://github.com/felitendo/FelocordTweak
 > [!NOTE]
 > TrollStore may display an encryption warning, which you can disregard.
 
-1. Download and install [Felocord.ipa](https://github.com/felitendo/FelocordTweak/releases/latest/download/Felocord.ipa) using your preferred sideloading method.
+1. Download and install [Felocord.ipa](https://github.com/Felocord/Tweak/releases/latest/download/Felocord.ipa) using your preferred sideloading method.
 
 ## Building FelocordTweak locally
 
@@ -58,7 +58,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/i
 
 If you've already installed theos, you can run `$THEOS/bin/update-theos` to make sure it's up to date.
 
-5. Clone this repository with `git clone git@github.com:felitendo/FelocordTweak.git` and `cd` into it. Replace the URL with your fork if you've forked this repository.
+5. Clone this repository with `git clone git@github.com:Felocord/Tweak.git` and `cd` into it. Replace the URL with your fork if you've forked this repository.
 
 6. To build FelocordTweak, you can run `rm -rf packages && make clean && make package FINALPACKAGE=1 && make package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless`. The first command will remove any previous packages, the second will clean the project, the third will build the rootful package (which is denoted by the `arm.deb` ending), and the fourth will build the rootless package (which is denoted by the `arm64.deb` ending).
 
