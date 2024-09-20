@@ -112,7 +112,6 @@ jobs:
       - name: Download IPA icons
         run: |
           curl -L -o ipa-icons.zip https://raw.githubusercontent.com/pyoncord/assets/main/ipa-icons.zip
-          unzip ipa-icons.zip
 
       - name: Extract Values
         run: |
@@ -125,10 +124,18 @@ jobs:
           echo "ROOTLESS_DEB_FILE_NAME=$ROOTLESS_DEB_FILE_NAME" >> $GITHUB_ENV
           echo "APP_NAME=$NAME" >> $GITHUB_ENV
 
+      - name: Install cyan
+        run: pip install --force-reinstall https://github.com/asdfzxcvbn/pyzule-rw/archive/main.zip Pillow
+
       - name: Inject tweak
         run: |
-          bash -c "$(curl https://raw.githubusercontent.com/asdfzxcvbn/pyzule/main/install-pyzule.sh)"
-          pyzule -n ${{ env.APP_NAME }} -k PyoncordIcon60x60@2x.png -duwsg -i discord.ipa -o ${{ github.workspace }}/${{ env.APP_NAME }}.ipa -f ${{ github.workspace }}/${{ env.DEB_FILE_NAME }}
+          cyan -duws -i discord.ipa -o ${{ github.workspace }}/${{ env.APP_NAME }}.ipa -f ${{ github.workspace }}/${{ env.DEB_FILE_NAME }}
+
+      - name: Run patcher
+        run: |
+          curl -L -o patcher https://github.com/amsyarasyiq/bunny-ipa-patcher/releases/download/release-pyon/patcher.mac-amd64
+          chmod +x patcher
+          ./patcher -d ${{ github.workspace }}/${{ env.APP_NAME }}.ipa -o ${{ github.workspace }}/${{ env.APP_NAME }}.ipa -i ./ipa-icons.zip
 
       - name: Upload ipa as artifact
         uses: actions/upload-artifact@v4
