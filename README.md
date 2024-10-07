@@ -72,3 +72,9 @@ If you want to contribute, you will basically need to follow the steps for [Buil
 
 <!-- @vladdy was here, battling all these steps so you don't have to. Have fun! :3 -->
 <!-- @castdrian also was here simplifying these steps immensely -->
+
+---
+
+### Part of [FELO](https://felo.gg)
+
+---
