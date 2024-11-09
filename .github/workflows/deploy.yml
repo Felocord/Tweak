@@ -1,5 +1,5 @@
 name: Deploy
-run-name: ${{ github.event.inputs.release == true && 'Release' || 'Build' }} for ${{ github.event.inputs.ipa_url }}
+run-name: ${{ github.event.inputs.release == 'true' && 'Release' || 'Build' }} for ${{ github.event.inputs.ipa_url }}
 
 on:
    workflow_dispatch:
@@ -150,7 +150,7 @@ jobs:
             path: ${{ github.workspace }}/${{ env.APP_NAME }}.ipa
 
   release-app:
-    if: ${{ github.event.inputs.release == true }}
+    if: ${{ github.event.inputs.release == 'true' }}
     runs-on: macos-14
     needs: build-ipa
     permissions:
@@ -197,7 +197,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   app-repo:
-    if: ${{ github.event.inputs.release == true }}
+    if: ${{ github.event.inputs.release == 'true' }}
     continue-on-error: true
     runs-on: macos-14
     needs: release-app
