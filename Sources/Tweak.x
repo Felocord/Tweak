@@ -3,7 +3,7 @@
 #import "Utils.h"
 #import "Logger.h"
 #import "Theme.h"
-#import "Font.h"
+#import "Fonts.h"
 #import "LoaderConfig.h"
 
 static NSURL *source;
@@ -107,6 +107,16 @@ static LoaderConfig *loaderConfig;
     if (themeString) {
         NSString *jsCode = [NSString stringWithFormat:@"globalThis.__PYON_LOADER__.storedTheme=%@", themeString];
         %orig([jsCode dataUsingEncoding:NSUTF8StringEncoding], source, async);
+    }
+
+    NSData *fontData = [NSData dataWithContentsOfURL:[pyoncordDirectory URLByAppendingPathComponent:@"fonts.json"]];
+    if (fontData) {
+        NSError *jsonError;
+        NSDictionary *fontDict = [NSJSONSerialization JSONObjectWithData:fontData options:0 error:&jsonError];
+        if (!jsonError && fontDict[@"main"]) {
+            BunnyLog(@"Found font configuration, applying...");
+            patchFonts(fontDict[@"main"], fontDict[@"name"]);
+        }
     }
 
     if (bundle) {

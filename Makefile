@@ -7,9 +7,9 @@ include $(THEOS)/makefiles/common.mk
 TWEAK_NAME = Bunny
 BUNDLE_NAME = BunnyResources
 
-Bunny_FILES = $(shell find Sources -name "*.x" && find Sources -name "*.m")
+Bunny_FILES = $(wildcard Sources/*.x Sources/*.m Sources/**/*.x Sources/**/*.m)
 Bunny_CFLAGS = -fobjc-arc -DPACKAGE_VERSION='@"$(THEOS_PACKAGE_BASE_VERSION)"' -I$(THEOS_PROJECT_DIR)/Headers
-Bunny_FRAMEWORKS = Foundation UIKit CoreGraphics
+Bunny_FRAMEWORKS = Foundation UIKit CoreGraphics CoreText CoreFoundation
 
 BunnyResources_INSTALL_PATH = "/Library/Application\ Support/"
 BunnyResources_RESOURCE_DIRS = Resources
