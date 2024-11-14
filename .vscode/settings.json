@@ -3,5 +3,12 @@
 		"MD029": false,
 		"MD033": false,
 		"MD045": false,
-	}
+	},
+	"VsCodeTaskButtons.tasks": [
+		{
+			"label": "$(tools) Make and Copy",
+			"task": "Make and Copy Tweak",
+			"tooltip": "Make and copy Tweak"
+		}
+	],
 }

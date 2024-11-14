@@ -3,22 +3,22 @@
 Tweak to inject [Bunny](https://github.com/pyoncord/Bunny) into Discord. Forked [VendettaTweak](https://github.com/vendetta-mod/VendettaTweak), modified to match with [BunnyXposed](https://github.com/pyoncord/BunnyXposed) behavior. There are still slight differences between these two, and this tweak may be missing some loader features.
 
 > [!NOTE]
-> As of right now this tweak does not encompass some functionalities when running in a jailed environment with a wildcard certificate \
+> As of right now this tweak does not encompass some functionalities when running in a jailed environment with a distribution certificate that has a different App ID  \
 > If you value these features sign the application with a local dev certificate:
-> - setAlternateAppIcon does not work, thus breaking dynamic app icons
-> - sharing files to the application/selecting items via the Files app does not work 
+>
+> - setAlternateAppIcon does not work, thus breaking dynamic app icons (unlikely to be able to be fixed unless iOS behavior changes)
+> - sharing files to the application/selecting items via the Files app does not work (this might be more of a keychain/app group issue)
 
 ## Installation
 
 Builds can be found in the [Releases](https://github.com/pyoncord/BunnyTweak/releases/latest) tab.
 
 > [!NOTE]
-> Raw decrypted IPAs which are used to provide prepatched IPAs are sourced from the [Enmity](https://github.com/enmity-mod/) community. These raw decrypted IPAs are also used throughout Enmity related projects such as [enmity-mod/tweak](https://github.com/enmity-mod/tweak/) and [acquitelol/rosiecord](https://github.com/acquitelol/rosiecord).\
-> All credits are attributed to the owner(s) of the raw IPAs.
+> Decrypted IPAs are sourced from the [Enmity](https://github.com/enmity-mod/) community. These are also used throughout Enmity related projects such as [enmity-mod/tweak](https://github.com/enmity-mod/tweak/) and [acquitelol/rosiecord](https://github.com/acquitelol/rosiecord).\
+> All credits are attributed to the owner(s).
 
 ### Jailbroken
 
-1. Install the Orion runtime via your preferred package manager, by adding `https://repo.chariz.com/` to your sources, then finding `Orion Runtime`.
 1. Install Bunny by downloading the appropriate Debian package (or by building your own, see [Building BunnyTweak locally](#building-bunnytweak-locally)) and adding it to your package manager. Use the file ending in `arm.deb` for rootful jailbreaks, and the file ending in `arm64.deb` for rootless jailbreaks.
 
 ### Jailed
@@ -34,7 +34,7 @@ Builds can be found in the [Releases](https://github.com/pyoncord/BunnyTweak/rel
 ## Building BunnyTweak locally
 
 > [!NOTE]
-> These steps assume you use MacOS.
+> These steps assume you use macOS.
 
 1. Install Xcode from the App Store. If you've previously installed the `Command Line Utilities` package, you will need to run `sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer` to make sure you're using the Xcode tools instead.
 
