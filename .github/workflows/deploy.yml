@@ -144,8 +144,7 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            ONLY_ACTIVE_ARCH=NO
-          cd ..
+            ONLY_ACTIVE_ARCH=NO | xcbeautify
 
       - name: Extract Values
         run: |
