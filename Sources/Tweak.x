@@ -162,8 +162,9 @@ static LoaderConfig *loaderConfig;
             BunnyLog(@"Bundle contents: %@", bundleContents);
         }
         
-        pyoncordDirectory = getPyoncordDirectory();
+pyoncordDirectory = getPyoncordDirectory();
         loaderConfig = [[LoaderConfig alloc] init];
+        [loaderConfig loadConfig];
         
         %init;
     }
