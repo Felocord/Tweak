@@ -129,13 +129,9 @@ jobs:
           repository: castdrian/OpenInDiscord
           path: OpenInDiscord
 
-      - name: Setup Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: latest-stable
-
       - name: Build Safari Extension
         run: |
+          sudo xcode-select -switch /Applications/Xcode_16.app/Contents/Developer
           cd OpenInDiscord
           xcodebuild build \
             -target "OpenInDiscord Extension" \
