@@ -83,11 +83,11 @@ jobs:
       - name: Set DEB path
         run: |
           if [ "${{ env.DEB_DOWNLOADED }}" == "true" ]; then
-            echo "DEB_PATH=${{ github.workspace }}/*-arm.deb" >> $GITHUB_ENV
-            echo "ROOTLESS_DEB_PATH=${{ github.workspace }}/*-arm64.deb" >> $GITHUB_ENV
+            echo "DEB_PATH=*-arm.deb" >> $GITHUB_ENV
+            echo "ROOTLESS_DEB_PATH=*-arm64.deb" >> $GITHUB_ENV
           else
-            echo "DEB_PATH=${{ github.workspace }}/packages/*-arm.deb" >> $GITHUB_ENV
-            echo "ROOTLESS_DEB_PATH=${{ github.workspace }}/packages/*-arm64.deb" >> $GITHUB_ENV
+            echo "DEB_PATH=packages/*-arm.deb" >> $GITHUB_ENV
+            echo "ROOTLESS_DEB_PATH=packages/*-arm64.deb" >> $GITHUB_ENV
           fi
 
       - name: Upload package
@@ -129,6 +129,11 @@ jobs:
           repository: castdrian/OpenInDiscord
           path: OpenInDiscord
 
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
       - name: Build Safari Extension
         run: |
           cd OpenInDiscord
@@ -136,7 +141,7 @@ jobs:
             -target "OpenInDiscord Extension" \
             -configuration Release \
             -sdk iphoneos \
-            CONFIGURATION_BUILD_DIR="$(pwd)/build" \
+            CONFIGURATION_BUILD_DIR="build" \
             PRODUCT_NAME="OpenInDiscord" \
             PRODUCT_MODULE_NAME="OpenInDiscordExt" \
             SKIP_INSTALL=NO \
