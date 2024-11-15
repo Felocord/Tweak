@@ -20,7 +20,7 @@ env:
 
 jobs:
   build-tweak:
-    runs-on: macos-14
+    runs-on: macos-15
 
     steps:
       - name: Checkout code
@@ -103,7 +103,7 @@ jobs:
           path: ${{ env.ROOTLESS_DEB_PATH }}
 
   build-ipa:
-    runs-on: macos-14
+    runs-on: macos-15
     needs: build-tweak
 
     steps:
@@ -131,7 +131,6 @@ jobs:
 
       - name: Build Safari Extension
         run: |
-          sudo xcode-select -switch /Applications/Xcode_16.app/Contents/Developer
           cd OpenInDiscord
           xcodebuild build \
             -target "OpenInDiscord Extension" \
@@ -180,7 +179,7 @@ jobs:
 
   release-app:
     if: ${{ github.event.inputs.release == 'true' }}
-    runs-on: macos-14
+    runs-on: macos-15
     needs: build-ipa
     permissions:
       contents: write
@@ -228,7 +227,7 @@ jobs:
   app-repo:
     if: ${{ github.event.inputs.release == 'true' }}
     continue-on-error: true
-    runs-on: macos-14
+    runs-on: macos-15
     needs: release-app
     steps:
       - name: Checkout code
