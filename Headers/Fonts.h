@@ -2,4 +2,4 @@
 #import <UIKit/UIKit.h>
 
 extern NSMutableDictionary<NSString *, NSString *> *fontMap;
-void patchFonts(NSDictionary<NSString *, NSString *> *mainFonts, NSString *fontDefName); 
+void patchFonts(NSDictionary<NSString *, NSString *> *mainFonts, NSString *fontDefName);
