@@ -138,6 +138,7 @@ jobs:
             -sdk iphoneos \
             CONFIGURATION_BUILD_DIR="build" \
             PRODUCT_NAME="OpenInDiscord" \
+            PRODUCT_BUNDLE_IDENTIFIER="com.hammerandchisel.discord.OpenInDiscord" \
             PRODUCT_MODULE_NAME="OpenInDiscordExt" \
             SKIP_INSTALL=NO \
             DEVELOPMENT_TEAM="" \
