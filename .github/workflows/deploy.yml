@@ -2,21 +2,20 @@ name: Deploy
 run-name: ${{ github.event.inputs.release == 'true' && 'Release' || 'Build' }} for ${{ github.event.inputs.ipa_url }}
 
 on:
-   workflow_dispatch:
+  workflow_dispatch:
     inputs:
-        ipa_url:
-            description: "Direct link to the decrypted IPA"
-            default: ""
-            required: true
-            type: string
-        release:
-            description: 'Release the build'
-            required: true
-            type: boolean
+      ipa_url:
+        description: "Direct link to the decrypted IPA"
+        default: ""
+        required: true
+        type: string
+      release:
+        description: "Release the build"
+        required: true
+        type: boolean
 
 env:
   GH_TOKEN: ${{ github.token }}
-
 
 jobs:
   build-tweak:
@@ -45,7 +44,7 @@ jobs:
 
           release_version=$(echo "$release_info" | jq -r '.assets[] | select(.name | contains("iphoneos-arm.deb")) | .name' | grep -o '_[0-9.]\+_' | tr -d '_')
           control_version=$(grep '^Version:' control | cut -d ' ' -f 2)
-          
+
           if [ "$release_version" = "$control_version" ]; then
             echo "Versions match. Downloading DEB files..."
             echo "$release_info" | jq -r '.assets[] | select(.name | endswith(".deb")) | .browser_download_url' | xargs -I {} curl -L -O {}
@@ -55,7 +54,7 @@ jobs:
             echo "DEB_DOWNLOADED=false" >> $GITHUB_ENV
             exit 0
           fi
-          
+
       - name: Check cache
         if: env.DEB_DOWNLOADED == 'false'
         run: echo upstream_heads=`git ls-remote https://github.com/theos/theos | head -n 1 | cut -f 1`-`git ls-remote https://github.com/theos/sdks | head -n 1 | cut -f 1` >> $GITHUB_ENV
@@ -109,7 +108,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -157,13 +156,13 @@ jobs:
           ROOTLESS_DEB_FILE_NAME="${PACKAGE}_${VERSION}_iphoneos-arm64.deb"
           echo "ROOTLESS_DEB_FILE_NAME=$ROOTLESS_DEB_FILE_NAME" >> $GITHUB_ENV
           echo "APP_NAME=$NAME" >> $GITHUB_ENV
-      
+
       - name: Run patcher
         run: |
           curl -L -o patcher https://github.com/amsyarasyiq/bunny-ipa-patcher/releases/download/release-pyon/patcher.mac-amd64
           chmod +x patcher
           ./patcher -d discord.ipa -o discord.ipa -i ./ipa-icons.zip
-  
+
       - name: Install cyan
         run: pip install --force-reinstall https://github.com/asdfzxcvbn/pyzule-rw/archive/main.zip Pillow
 
@@ -174,8 +173,8 @@ jobs:
       - name: Upload ipa as artifact
         uses: actions/upload-artifact@v4
         with:
-            name: ipa
-            path: ${{ env.APP_NAME }}.ipa
+          name: ipa
+          path: ${{ env.APP_NAME }}.ipa
 
   release-app:
     if: ${{ github.event.inputs.release == 'true' }}
@@ -187,7 +186,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Extract Values
         run: |
           NAME=$(grep '^Name:' control | cut -d ' ' -f 2)
@@ -251,10 +250,9 @@ jobs:
           DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v$VERSION/${{ env.APP_NAME }}.ipa
           NEW_ENTRY=$(jq -n --arg version "$VERSION" --arg date "$DATE" --arg size "$IPA_SIZE" --arg downloadURL "$DOWNLOAD_URL" '{version: $version, date: $date, size: ($size | tonumber), downloadURL: $downloadURL}')
           jq --argjson newEntry "$NEW_ENTRY" '.apps[0].versions |= [$newEntry] + .' app-repo.json > temp.json && mv temp.json app-repo.json
-        
+
       - uses: EndBug/add-and-commit@v9
         with:
           default_author: github_actions
           message: "chore: update app-repo.json"
           add: app-repo.json
-          
