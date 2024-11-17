@@ -39,7 +39,7 @@ To resolve the fixable issues, you need to match the app's bundle ID with your p
 </tr>
 </table>
 
-## Doing this will break notifications if the app is backgrounded or closed.
+## Doing this will break notifications if the app is backgrounded or closed
 
 </details>
 
@@ -53,7 +53,7 @@ Builds can be found in the [Releases](https://github.com/pyoncord/BunnyTweak/rel
 
 ### Jailbroken
 
-1. Install Bunny by downloading the appropriate Debian package (or by building your own, see [Building BunnyTweak locally](#building-bunnytweak-locally)) and adding it to your package manager. Use the file ending in `arm.deb` for rootful jailbreaks, and the file ending in `arm64.deb` for rootless jailbreaks.
+1. Install Bunny by downloading the appropriate Debian package (or by building your own, see [Building](#building)) and adding it to your package manager. Use the file ending in `arm.deb` for rootful jailbreaks, and the file ending in `arm64.deb` for rootless jailbreaks.
 
 ### Jailed
 

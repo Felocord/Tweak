@@ -1,10 +1,67 @@
 #import "Logger.h"
+#import "Utils.h"
 #import <Foundation/Foundation.h>
+#import <Security/Security.h>
 #import <UIKit/UIKit.h>
 #import <dlfcn.h>
 
+typedef struct __CMSDecoder *CMSDecoderRef;
+extern CFTypeRef SecCMSDecodeGetContent(CFDataRef message);
+extern OSStatus CMSDecoderCreate(CMSDecoderRef *cmsDecoder);
+extern OSStatus CMSDecoderUpdateMessage(CMSDecoderRef cmsDecoder, const void *content,
+                                        size_t contentLength);
+extern OSStatus CMSDecoderFinalizeMessage(CMSDecoderRef cmsDecoder);
+extern OSStatus CMSDecoderCopyContent(CMSDecoderRef cmsDecoder, CFDataRef *content);
+
 #define DISCORD_BUNDLE_ID @"com.hammerandchisel.discord"
 #define DISCORD_NAME @"Discord"
+
+typedef NS_ENUM(NSInteger, BundleIDError) {
+    BundleIDErrorFiles,
+    BundleIDErrorIcon
+};
+
+static void showBundleIDError(BundleIDError error) {
+    NSString *message = @"For this to work change the Bundle ID so that it matches your "
+                        @"provisioning profile's App ID (excluding the Team ID prefix).";
+    NSString *title = error == BundleIDErrorFiles ? @"Cannot Access Files" : @"Cannot Change Icon";
+    showErrorAlert(title, message);
+}
+
+static NSString *getProvisioningAppID(void) {
+    NSString *provisionPath = [NSBundle.mainBundle pathForResource:@"embedded"
+                                                            ofType:@"mobileprovision"];
+    if (!provisionPath)
+        return nil;
+    NSData *provisionData = [NSData dataWithContentsOfFile:provisionPath];
+    if (!provisionData)
+        return nil;
+    CMSDecoderRef decoder = NULL;
+    CMSDecoderCreate(&decoder);
+    CMSDecoderUpdateMessage(decoder, provisionData.bytes, provisionData.length);
+    CMSDecoderFinalizeMessage(decoder);
+    CFDataRef dataRef = NULL;
+    CMSDecoderCopyContent(decoder, &dataRef);
+    NSData *data = (__bridge_transfer NSData *)dataRef;
+    if (decoder)
+        CFRelease(decoder);
+    NSError *error = nil;
+    id plist       = [NSPropertyListSerialization propertyListWithData:data
+                                                         options:0
+                                                          format:NULL
+                                                           error:&error];
+    if (!plist || ![plist isKindOfClass:[NSDictionary class]])
+        return nil;
+    NSString *appID = plist[@"Entitlements"][@"application-identifier"];
+    if (!appID)
+        return nil;
+    NSArray *components = [appID componentsSeparatedByString:@"."];
+    if (components.count > 1) {
+        return [[components subarrayWithRange:NSMakeRange(1, components.count - 1)]
+            componentsJoinedByString:@"."];
+    }
+    return nil;
+}
 
 static NSString *getAccessGroupID(void) {
     NSDictionary *query = @{
@@ -88,11 +145,47 @@ static BOOL isSelfCall(void) {
 }
 %end
 
+%hook UIApplication
+- (void)setAlternateIconName:(NSString *)iconName
+           completionHandler:(void (^)(NSError *))completion {
+    void (^wrappedCompletion)(NSError *) = ^(NSError *error) {
+        if (error) {
+            showBundleIDError(BundleIDErrorIcon);
+        }
+
+        if (completion) {
+            completion(error);
+        }
+    };
+
+    %orig(iconName, wrappedCompletion);
+}
+%end
+
+%hook UIViewController
+- (void)presentViewController:(UIViewController *)viewControllerToPresent
+                     animated:(BOOL)flag
+                   completion:(void (^)(void))completion {
+    if ([viewControllerToPresent isKindOfClass:[UIDocumentPickerViewController class]]) {
+        NSString *provisioningAppID = getProvisioningAppID();
+        NSString *currentBundleID   = [[NSBundle mainBundle] bundleIdentifier];
+
+        if (provisioningAppID && ![provisioningAppID isEqualToString:currentBundleID]) {
+            BunnyLog(@"Intercepted UIDocumentPickerViewController presentation");
+            showBundleIDError(BundleIDErrorFiles);
+            return;
+        }
+    }
+    %orig;
+}
+%end
+
 %end
 
 %ctor {
     BOOL isAppStoreApp = [[NSFileManager defaultManager]
         fileExistsAtPath:[[NSBundle mainBundle] appStoreReceiptURL].path];
-    if (!isAppStoreApp)
+    if (!isAppStoreApp) {
         %init(Sideloading);
+    }
 }
