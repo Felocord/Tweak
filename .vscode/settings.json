@@ -6,9 +6,14 @@
 	},
 	"VsCodeTaskButtons.tasks": [
 		{
-			"label": "$(tools) Make and Copy",
-			"task": "Make and Copy Tweak",
-			"tooltip": "Make and copy Tweak"
+			"label": "$(tools) Build Tweak",
+			"task": "Build Tweak",
+			"tooltip": "Build Tweak"
+		},
+		{
+			"label": "$(cloud-upload) AirDrop Tweak",
+			"task": "AirDrop Tweak",
+			"tooltip": "AirDrop Tweak"
 		}
 	],
 	"externalFormatters.languages": {
