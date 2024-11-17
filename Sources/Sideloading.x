@@ -171,8 +171,7 @@ static BOOL isSelfCall(void) {
         NSString *currentBundleID   = [[NSBundle mainBundle] bundleIdentifier];
 
         if (provisioningAppID && ![provisioningAppID isEqualToString:currentBundleID]) {
-            BunnyLog(
-                @"Intercepted UIDocumentPickerViewController presentation - bundle ID mismatch");
+            BunnyLog(@"Intercepted UIDocumentPickerViewController presentation");
             showBundleIDError(BundleIDErrorFiles);
             return;
         }
