@@ -1,13 +1,47 @@
 # BunnyTweak
 
-Tweak to inject [Bunny](https://github.com/pyoncord/Bunny) into Discord. Forked [VendettaTweak](https://github.com/vendetta-mod/VendettaTweak), modified to match with [BunnyXposed](https://github.com/pyoncord/BunnyXposed) behavior. There are still slight differences between these two, and this tweak may be missing some loader features.
+Tweak to inject [Bunny](https://github.com/pyoncord/Bunny) into Discord. Forked [VendettaTweak](https://github.com/vendetta-mod/VendettaTweak), modified to match with [BunnyXposed](https://github.com/pyoncord/BunnyXposed) behavior. \
+There are still slight differences between these two.
 
-> [!NOTE]
-> As of right now this tweak does not encompass some functionalities when running in a jailed environment with a distribution certificate that has a different App ID  \
-> If you value these features sign the application with a local dev certificate:
->
-> - setAlternateAppIcon does not work, thus breaking dynamic app icons (unlikely to be able to be fixed unless iOS behavior changes)
-> - sharing files to the application/selecting items via the Files app does not work (this might be more of a keychain/app group issue)
+> [!WARNING]
+> When sideloading with an Apple Developer Account, some functionality will break. If you value these features, sideload with a local development certificate instead. There is a workaround available that fixes several of the issues. See below for details.
+
+<details>
+<summary>Issues & Workaround</summary>
+<br/>
+To resolve the fixable issues, you need to match the app's bundle ID with your provisioning profile's App ID (excluding the team ID prefix):
+<table>
+<tr>
+    <th>Issue</th>
+    <th>Fixable</th>
+    <th>Example</th>
+</tr>
+<tr>
+    <td>Cannot change app icons</td>
+    <td>✓</td>
+    <td rowspan="5"><img src="https://adriancastro.dev/e0hbonxknepw.jpg" width="300"></td>
+</tr>
+<tr>
+    <td>Cannot select items via Files app</td>
+    <td>✓</td>
+</tr>
+<tr>
+    <td>Cannot share items to Discord</td>
+    <td>✗</td>
+</tr>
+<tr>
+    <td>Cannot use passkeys</td>
+    <td>✗</td>
+</tr>
+<tr>
+    <td></td>
+    <td></td>
+</tr>
+</table>
+
+## Doing this will break notifications if the app is backgrounded or closed.
+
+</details>
 
 ## Installation
 
@@ -31,9 +65,11 @@ Builds can be found in the [Releases](https://github.com/pyoncord/BunnyTweak/rel
 
 1. Download and install [Bunny.ipa](https://github.com/pyoncord/BunnyTweak/releases/latest/download/Bunny.ipa) using your preferred sideloading method.
 
-## Building BunnyTweak locally
+## Building
 
-> [!NOTE]
+<details>
+<summary>Instructions</summary>
+
 > These steps assume you use macOS.
 
 1. Install Xcode from the App Store. If you've previously installed the `Command Line Utilities` package, you will need to run `sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer` to make sure you're using the Xcode tools instead.
@@ -66,9 +102,11 @@ The first time you run this, it might take a bit longer, but subsequent builds s
 
 The resulting `.deb` files will be in the `packages` folder. As a reminder, `*arm.deb` is for rootful jailbreaks and sideloading, and `*arm64.deb` is for rootless jailbreaks.
 
-## Contributing
+</details>
 
-If you want to contribute, you will basically need to follow the steps for [Building BunnyTweak locally](#building-bunnytweak-locally), as well as run `make spm` for the Swift LSP to work.
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=bunny-mod/BunnyTweak)](https://github.com/bunny-mod/BunnyTweak/graphs/contributors)
 
 <!-- @vladdy was here, battling all these steps so you don't have to. Have fun! :3 -->
 <!-- @castdrian also was here simplifying these steps immensely -->
