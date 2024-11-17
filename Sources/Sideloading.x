@@ -150,10 +150,7 @@ static BOOL isSelfCall(void) {
            completionHandler:(void (^)(NSError *))completion {
     void (^wrappedCompletion)(NSError *) = ^(NSError *error) {
         if (error) {
-            showErrorAlert(@"Cannot Change Icon",
-                           @"For this to work change the Bundle ID so that it "
-                           @"matches your provisioning profile's App ID "
-                           @"(excluding the Team ID prefix).");
+            showBundleIDError(BundleIDErrorIcon);
         }
 
         if (completion) {
