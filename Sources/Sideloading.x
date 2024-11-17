@@ -1,4 +1,5 @@
 #import "Logger.h"
+#import "Utils.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <dlfcn.h>
@@ -85,6 +86,26 @@ static BOOL isSelfCall(void) {
 %hook UIPasteboard
 - (NSString *)_accessGroup {
     return getAccessGroupID();
+}
+%end
+
+%hook UIApplication
+- (void)setAlternateIconName:(NSString *)iconName
+           completionHandler:(void (^)(NSError *))completion {
+    void (^wrappedCompletion)(NSError *) = ^(NSError *error) {
+        if (error) {
+            showErrorAlert(@"Cannot Change Icon",
+                           @"For this to work change the bundle ID so that it "
+                           @"matches your provisioning profile's App ID "
+                           @"(excluding the team ID prefix).");
+        }
+
+        if (completion) {
+            completion(error);
+        }
+    };
+
+    %orig(iconName, wrappedCompletion);
 }
 %end
 
