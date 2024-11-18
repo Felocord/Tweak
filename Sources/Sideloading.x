@@ -1,5 +1,6 @@
 #import "Logger.h"
 #import "Utils.h"
+#import <AuthenticationServices/AuthenticationServices.h>
 #import <Foundation/Foundation.h>
 #import <Security/Security.h>
 #import <UIKit/UIKit.h>
@@ -18,14 +19,31 @@ extern OSStatus CMSDecoderCopyContent(CMSDecoderRef cmsDecoder, CFDataRef *conte
 
 typedef NS_ENUM(NSInteger, BundleIDError) {
     BundleIDErrorFiles,
-    BundleIDErrorIcon
+    BundleIDErrorIcon,
+    BundleIDErrorPasskey
 };
 
 static void showBundleIDError(BundleIDError error) {
-    NSString *message = @"For this to work change the Bundle ID so that it matches your "
-                        @"provisioning profile's App ID (excluding the Team ID prefix).";
-    NSString *title = error == BundleIDErrorFiles ? @"Cannot Access Files" : @"Cannot Change Icon";
-    showErrorAlert(title, message);
+    NSString *message;
+    NSString *title;
+    void (^completion)(void) = nil;
+
+    switch (error) {
+    case BundleIDErrorFiles:
+    case BundleIDErrorIcon:
+        message = @"For this to work change the Bundle ID so that it matches your "
+                  @"provisioning profile's App ID (excluding the Team ID prefix).";
+        title   = error == BundleIDErrorFiles ? @"Cannot Access Files" : @"Cannot Change Icon";
+        break;
+    case BundleIDErrorPasskey:
+        message    = @"Passkeys are not supported when sideloading Discord. "
+                     @"Please use a different login method.";
+        title      = @"Cannot Use Passkey";
+        completion = ^{ exit(0); };
+        break;
+    }
+
+    showErrorAlert(title, message, completion);
 }
 
 static NSString *getProvisioningAppID(void) {
@@ -178,6 +196,14 @@ static BOOL isSelfCall(void) {
     }
     %orig;
 }
+%end
+
+%hook ASAuthorizationController
+
+- (void)performRequests {
+    showBundleIDError(BundleIDErrorPasskey);
+}
+
 %end
 
 %end

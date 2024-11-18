@@ -43,7 +43,7 @@ UIColor *hexToUIColor(NSString *hex) {
     return nil;
 }
 
-void showErrorAlert(NSString *title, NSString *message) {
+void showErrorAlert(NSString *title, NSString *message, void (^completion)(void)) {
     dispatch_async(dispatch_get_main_queue(), ^{
         UIAlertController *alert =
             [UIAlertController alertControllerWithTitle:title
@@ -52,7 +52,11 @@ void showErrorAlert(NSString *title, NSString *message) {
 
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK"
                                                            style:UIAlertActionStyleDefault
-                                                         handler:nil];
+                                                         handler:^(UIAlertAction *action) {
+                                                             if (completion) {
+                                                                 completion();
+                                                             }
+                                                         }];
 
         [alert addAction:okAction];
 

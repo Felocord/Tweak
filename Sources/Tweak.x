@@ -23,7 +23,7 @@ static LoaderConfig *loaderConfig;
     if (!bunnyPatchesBundle) {
         BunnyLog(@"Failed to load BunnyPatches bundle from path: %@", bunnyPatchesBundlePath);
         showErrorAlert(@"Loader Error",
-                       @"Failed to initialize mod loader. Please reinstall the tweak.");
+                       @"Failed to initialize mod loader. Please reinstall the tweak.", nil);
         return %orig;
     }
 
@@ -31,7 +31,7 @@ static LoaderConfig *loaderConfig;
     if (!patchPath) {
         BunnyLog(@"Failed to find payload-base.js in bundle");
         showErrorAlert(@"Loader Error",
-                       @"Failed to initialize mod loader. Please reinstall the tweak.");
+                       @"Failed to initialize mod loader. Please reinstall the tweak.", nil);
         return %orig;
     }
 
