@@ -3,4 +3,4 @@
 
 NSURL *getPyoncordDirectory(void);
 UIColor *hexToUIColor(NSString *hex);
-void showErrorAlert(NSString *title, NSString *message);
+void showErrorAlert(NSString *title, NSString *message, void (^completion)(void));
