@@ -1,25 +1,59 @@
 # FelocordTweak
 
-Tweak to inject [Felocord](https://github.com/Felocord/Felocord) into Discord. Forked [VendettaTweak](https://github.com/vendetta-mod/VendettaTweak), modified to match with [FelocordXposed](https://github.com/Felocord/Xposed) behavior. There are still slight differences between these two, and this tweak may be missing some loader features.
+Tweak to inject [Bunny](https://github.com/pyoncord/Bunny) into Discord. Forked [VendettaTweak](https://github.com/vendetta-mod/VendettaTweak), modified to match with [BunnyXposed](https://github.com/pyoncord/BunnyXposed) behavior. \
+There are still slight differences between these two.
 
-> [!NOTE]
-> As of right now this tweak does not encompass some functionalities when running in a jailed environment with a wildcard certificate \
-> If you value these features sign the application with a local dev certificate:
-> - setAlternateAppIcon does not work, thus breaking dynamic app icons
-> - sharing files to the application/selecting items via the Files app does not work 
+> [!WARNING]
+> When sideloading with an Apple Developer Account, some functionality will break. If you value these features, sideload with a local development certificate instead. There is a workaround available that fixes several of the issues. See below for details.
+
+<details>
+<summary>Issues & Workaround</summary>
+<br/>
+To resolve the fixable issues, you need to match the app's bundle ID with your provisioning profile's App ID (excluding the team ID prefix):
+<table>
+<tr>
+    <th>Issue</th>
+    <th>Fixable</th>
+    <th>Example</th>
+</tr>
+<tr>
+    <td>Cannot change app icons</td>
+    <td>✓</td>
+    <td rowspan="5"><img src="https://adriancastro.dev/e0hbonxknepw.jpg" width="300"></td>
+</tr>
+<tr>
+    <td>Cannot select items via Files app</td>
+    <td>✓</td>
+</tr>
+<tr>
+    <td>Cannot share items to Discord</td>
+    <td>✗</td>
+</tr>
+<tr>
+    <td>Cannot use passkeys</td>
+    <td>✗</td>
+</tr>
+<tr>
+    <td></td>
+    <td></td>
+</tr>
+</table>
+
+## Doing this will break notifications if the app is backgrounded or closed
+
+</details>
 
 ## Installation
 
 Builds can be found in the [Releases](https://github.com/Felocord/Tweak/releases/latest) tab.
 
 > [!NOTE]
-> Raw decrypted IPAs which are used to provide prepatched IPAs are sourced from the [Enmity](https://github.com/enmity-mod/) community. These raw decrypted IPAs are also used throughout Enmity related projects such as [enmity-mod/tweak](https://github.com/enmity-mod/tweak/) and [acquitelol/rosiecord](https://github.com/acquitelol/rosiecord).\
-> All credits are attributed to the owner(s) of the raw IPAs.
+> Decrypted IPAs are sourced from the [Enmity](https://github.com/enmity-mod/) community. These are also used throughout Enmity related projects such as [enmity-mod/tweak](https://github.com/enmity-mod/tweak/) and [acquitelol/rosiecord](https://github.com/acquitelol/rosiecord).\
+> All credits are attributed to the owner(s).
 
 ### Jailbroken
 
-1. Install the Orion runtime via your preferred package manager, by adding `https://repo.chariz.com/` to your sources, then finding `Orion Runtime`.
-1. Install Felocord by downloading the appropriate Debian package (or by building your own, see [Building FelocordTweak locally](#building-felocordtweak-locally)) and adding it to your package manager. Use the file ending in `arm.deb` for rootful jailbreaks, and the file ending in `arm64.deb` for rootless jailbreaks.
+1. Install Bunny by downloading the appropriate Debian package (or by building your own, see [Building](#building)) and adding it to your package manager. Use the file ending in `arm.deb` for rootful jailbreaks, and the file ending in `arm64.deb` for rootless jailbreaks.
 
 ### Jailed
 
@@ -31,10 +65,12 @@ Builds can be found in the [Releases](https://github.com/Felocord/Tweak/releases
 
 1. Download and install [Felocord.ipa](https://github.com/Felocord/Tweak/releases/latest/download/Felocord.ipa) using your preferred sideloading method.
 
-## Building FelocordTweak locally
+## Building
 
-> [!NOTE]
-> These steps assume you use MacOS.
+<details>
+<summary>Instructions</summary>
+
+> These steps assume you use macOS.
 
 1. Install Xcode from the App Store. If you've previously installed the `Command Line Utilities` package, you will need to run `sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer` to make sure you're using the Xcode tools instead.
 
@@ -66,9 +102,11 @@ The first time you run this, it might take a bit longer, but subsequent builds s
 
 The resulting `.deb` files will be in the `packages` folder. As a reminder, `*arm.deb` is for rootful jailbreaks and sideloading, and `*arm64.deb` is for rootless jailbreaks.
 
-## Contributing
+</details>
 
-If you want to contribute, you will basically need to follow the steps for [Building FelocordTweak locally](#building-felocordtweak-locally), as well as run `make spm` for the Swift LSP to work.
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=bunny-mod/BunnyTweak)](https://github.com/bunny-mod/BunnyTweak/graphs/contributors)
 
 <!-- @vladdy was here, battling all these steps so you don't have to. Have fun! :3 -->
 <!-- @castdrian also was here simplifying these steps immensely -->

@@ -1,20 +1,33 @@
-name: Release
+name: Deploy Build
+run-name: ${{ github.event.inputs.release == 'true' && 'Release' || 'Build' }} for ${{ github.event.inputs.ipa_url }}
 
 on:
-   workflow_dispatch:
+  workflow_dispatch:
     inputs:
-        ipa_url:
-            description: "Direct link to the decrypted IPA"
-            default: ""
-            required: true
-            type: string
+      ipa_url:
+        description: "Direct link to the decrypted IPA"
+        default: ""
+        required: true
+        type: string
+      release:
+        description: "Release the build"
+        required: true
+        type: boolean
+  workflow_call:
+    inputs:
+      caller_workflow:
+        required: false
+        type: string
 
 env:
   GH_TOKEN: ${{ github.token }}
 
 jobs:
   build-tweak:
-    runs-on: macos-14
+    runs-on: macos-15
+
+    env:
+      DEB_DOWNLOADED: false
 
     steps:
       - name: Checkout code
@@ -23,6 +36,7 @@ jobs:
           submodules: true
 
       - name: Download Tweak
+        if: inputs.caller_workflow != 'ci'
         run: |
           set +e
 
@@ -39,7 +53,7 @@ jobs:
 
           release_version=$(echo "$release_info" | jq -r '.assets[] | select(.name | contains("iphoneos-arm.deb")) | .name' | grep -o '_[0-9.]\+_' | tr -d '_')
           control_version=$(grep '^Version:' control | cut -d ' ' -f 2)
-          
+
           if [ "$release_version" = "$control_version" ]; then
             echo "Versions match. Downloading DEB files..."
             echo "$release_info" | jq -r '.assets[] | select(.name | endswith(".deb")) | .browser_download_url' | xargs -I {} curl -L -O {}
@@ -49,7 +63,7 @@ jobs:
             echo "DEB_DOWNLOADED=false" >> $GITHUB_ENV
             exit 0
           fi
-          
+
       - name: Check cache
         if: env.DEB_DOWNLOADED == 'false'
         run: echo upstream_heads=`git ls-remote https://github.com/theos/theos | head -n 1 | cut -f 1`-`git ls-remote https://github.com/theos/sdks | head -n 1 | cut -f 1` >> $GITHUB_ENV
@@ -66,6 +80,10 @@ jobs:
         if: env.DEB_DOWNLOADED == 'false'
         uses: Randomblock1/theos-action@v1
 
+      - name: Set GNU Make path
+        run: |
+          echo "PATH=$(brew --prefix make)/libexec/gnubin:$PATH" >> $GITHUB_ENV
+
       - name: Build packages
         if: env.DEB_DOWNLOADED == 'false'
         run: make package FINALPACKAGE=1 && make package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
@@ -73,11 +91,11 @@ jobs:
       - name: Set DEB path
         run: |
           if [ "${{ env.DEB_DOWNLOADED }}" == "true" ]; then
-            echo "DEB_PATH=${{ github.workspace }}/*-arm.deb" >> $GITHUB_ENV
-            echo "ROOTLESS_DEB_PATH=${{ github.workspace }}/*-arm64.deb" >> $GITHUB_ENV
+            echo "DEB_PATH=*-arm.deb" >> $GITHUB_ENV
+            echo "ROOTLESS_DEB_PATH=*-arm64.deb" >> $GITHUB_ENV
           else
-            echo "DEB_PATH=${{ github.workspace }}/packages/*-arm.deb" >> $GITHUB_ENV
-            echo "ROOTLESS_DEB_PATH=${{ github.workspace }}/packages/*-arm64.deb" >> $GITHUB_ENV
+            echo "DEB_PATH=packages/*-arm.deb" >> $GITHUB_ENV
+            echo "ROOTLESS_DEB_PATH=packages/*-arm64.deb" >> $GITHUB_ENV
           fi
 
       - name: Upload package
@@ -93,13 +111,14 @@ jobs:
           path: ${{ env.ROOTLESS_DEB_PATH }}
 
   build-ipa:
-    runs-on: macos-14
+    if: inputs.caller_workflow != 'ci'
+    runs-on: macos-15
     needs: build-tweak
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -112,7 +131,30 @@ jobs:
       - name: Download IPA icons
         run: |
           curl -L -o ipa-icons.zip https://raw.githubusercontent.com/pyoncord/assets/main/ipa-icons.zip
-          unzip ipa-icons.zip
+
+      - name: Clone OpenInDiscord
+        uses: actions/checkout@v4
+        with:
+          repository: castdrian/OpenInDiscord
+          path: OpenInDiscord
+
+      - name: Build Safari Extension
+        run: |
+          cd OpenInDiscord
+          xcodebuild build \
+            -target "OpenInDiscord Extension" \
+            -configuration Release \
+            -sdk iphoneos \
+            CONFIGURATION_BUILD_DIR="build" \
+            PRODUCT_NAME="OpenInDiscord" \
+            PRODUCT_BUNDLE_IDENTIFIER="com.hammerandchisel.discord.OpenInDiscord" \
+            PRODUCT_MODULE_NAME="OpenInDiscordExt" \
+            SKIP_INSTALL=NO \
+            DEVELOPMENT_TEAM="" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            ONLY_ACTIVE_ARCH=NO | xcbeautify
 
       - name: Extract Values
         run: |
@@ -125,19 +167,28 @@ jobs:
           echo "ROOTLESS_DEB_FILE_NAME=$ROOTLESS_DEB_FILE_NAME" >> $GITHUB_ENV
           echo "APP_NAME=$NAME" >> $GITHUB_ENV
 
-      - name: Inject tweak
+      - name: Run patcher
         run: |
-          bash -c "$(curl https://raw.githubusercontent.com/asdfzxcvbn/pyzule/main/install-pyzule.sh)"
-          pyzule -n ${{ env.APP_NAME }} -k PyoncordIcon60x60@2x.png -d -i discord.ipa -o ${{ github.workspace }}/${{ env.APP_NAME }}.ipa -f ${{ github.workspace }}/${{ env.DEB_FILE_NAME }}
+          curl -L -o patcher https://github.com/amsyarasyiq/bunny-ipa-patcher/releases/download/release-pyon/patcher.mac-amd64
+          chmod +x patcher
+          ./patcher -d discord.ipa -o discord.ipa -i ./ipa-icons.zip
+
+      - name: Install cyan
+        run: pip install --force-reinstall https://github.com/asdfzxcvbn/pyzule-rw/archive/main.zip Pillow
+
+      - name: Inject tweak and extension
+        run: |
+          cyan -duws -i discord.ipa -o ${{ env.APP_NAME }}.ipa -f ${{ env.DEB_FILE_NAME }} OpenInDiscord/build/OpenInDiscord.appex
 
       - name: Upload ipa as artifact
         uses: actions/upload-artifact@v4
         with:
-            name: ipa
-            path: ${{ github.workspace }}/${{ env.APP_NAME }}.ipa
+          name: ipa
+          path: ${{ env.APP_NAME }}.ipa
 
   release-app:
-    runs-on: macos-14
+    if: inputs.caller_workflow != 'ci' && github.event.inputs.release == 'true'
+    runs-on: macos-15
     needs: build-ipa
     permissions:
       contents: write
@@ -145,7 +196,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Extract Values
         run: |
           NAME=$(grep '^Name:' control | cut -d ' ' -f 2)
@@ -183,8 +234,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   app-repo:
+    if: inputs.caller_workflow != 'ci' && github.event.inputs.release == 'true'
     continue-on-error: true
-    runs-on: macos-14
+    runs-on: macos-15
     needs: release-app
     steps:
       - name: Checkout code
@@ -208,10 +260,9 @@ jobs:
           DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v$VERSION/${{ env.APP_NAME }}.ipa
           NEW_ENTRY=$(jq -n --arg version "$VERSION" --arg date "$DATE" --arg size "$IPA_SIZE" --arg downloadURL "$DOWNLOAD_URL" '{version: $version, date: $date, size: ($size | tonumber), downloadURL: $downloadURL}')
           jq --argjson newEntry "$NEW_ENTRY" '.apps[0].versions |= [$newEntry] + .' app-repo.json > temp.json && mv temp.json app-repo.json
-        
+
       - uses: EndBug/add-and-commit@v9
         with:
           default_author: github_actions
           message: "chore: update app-repo.json"
           add: app-repo.json
-          

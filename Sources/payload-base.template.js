@@ -1,7 +1,7 @@
 globalThis.__PYON_LOADER__ = {
-    loaderName: "FelocordTweak",
-    loaderVersion: "0.3.1",
+    loaderName: "@TWEAK_NAME@",
+    loaderVersion: "@PACKAGE_VERSION@",
     hasThemeSupport: true,
     storedTheme: null,
     fontPatch: 2
-}
+} 
