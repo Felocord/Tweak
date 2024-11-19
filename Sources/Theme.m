@@ -4,7 +4,7 @@
 #import <objc/runtime.h>
 
 void swizzleDCDThemeColor(NSDictionary<NSString *, NSArray<NSString *> *> *semanticColors) {
-    BunnyLog(@"Swizzling DCDThemeColor");
+    FelocordLog(@"Swizzling DCDThemeColor");
 
     Class DCDTheme       = NSClassFromString(@"DCDTheme");
     Class dcdThemeTarget = object_getClass(DCDTheme);
@@ -27,7 +27,7 @@ void swizzleDCDThemeColor(NSDictionary<NSString *, NSArray<NSString *> *> *seman
 
         NSArray<NSString *> *semanticColor = semanticColors[methodName];
         if (semanticColor) {
-            BunnyLog(@"Swizzling %@", methodName);
+            FelocordLog(@"Swizzling %@", methodName);
 
             IMP originalImpl              = method_getImplementation(method);
             UIColor *(*original)(id, SEL) = (UIColor * (*)(id, SEL)) originalImpl;
@@ -52,7 +52,7 @@ void swizzleDCDThemeColor(NSDictionary<NSString *, NSArray<NSString *> *> *seman
 }
 
 void swizzleUIColor(NSDictionary<NSString *, NSString *> *rawColors) {
-    BunnyLog(@"Swizzling UIColor");
+    FelocordLog(@"Swizzling UIColor");
 
     Class UIColorClass = NSClassFromString(@"UIColor");
     Class target       = object_getClass(UIColorClass);
@@ -67,7 +67,7 @@ void swizzleUIColor(NSDictionary<NSString *, NSString *> *rawColors) {
 
         NSString *rawColor = rawColors[methodName];
         if (rawColor) {
-            BunnyLog(@"Swizzling %@", methodName);
+            FelocordLog(@"Swizzling %@", methodName);
 
             id block = ^UIColor *(id self) { return hexToUIColor(rawColor); };
 

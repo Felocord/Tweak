@@ -4,15 +4,15 @@ INSTALL_TARGET_PROCESSES = Discord
 
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME = Bunny
-BUNDLE_NAME = BunnyResources
+TWEAK_NAME = Felocord
+BUNDLE_NAME = FelocordResources
 
-Bunny_FILES = $(wildcard Sources/*.x Sources/*.m Sources/**/*.x Sources/**/*.m)
-Bunny_CFLAGS = -fobjc-arc -DPACKAGE_VERSION='@"$(THEOS_PACKAGE_BASE_VERSION)"' -I$(THEOS_PROJECT_DIR)/Headers
-Bunny_FRAMEWORKS = Foundation UIKit CoreGraphics CoreText CoreFoundation
+Felocord_FILES = $(wildcard Sources/*.x Sources/*.m Sources/**/*.x Sources/**/*.m)
+Felocord_CFLAGS = -fobjc-arc -DPACKAGE_VERSION='@"$(THEOS_PACKAGE_BASE_VERSION)"' -I$(THEOS_PROJECT_DIR)/Headers
+Felocord_FRAMEWORKS = Foundation UIKit CoreGraphics CoreText CoreFoundation
 
-BunnyResources_INSTALL_PATH = "/Library/Application\ Support/"
-BunnyResources_RESOURCE_DIRS = Resources
+FelocordResources_INSTALL_PATH = "/Library/Application\ Support/"
+FelocordResources_RESOURCE_DIRS = Resources
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 include $(THEOS_MAKE_PATH)/bundle.mk

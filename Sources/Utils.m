@@ -1,20 +1,20 @@
 #import "Utils.h"
 
-NSURL *getPyoncordDirectory(void) {
+NSURL *getFelitendoDirectory(void) {
     NSFileManager *fileManager  = [NSFileManager defaultManager];
     NSURL *documentDirectoryURL = [[fileManager URLsForDirectory:NSDocumentDirectory
                                                        inDomains:NSUserDomainMask] lastObject];
 
-    NSURL *pyoncordFolderURL = [documentDirectoryURL URLByAppendingPathComponent:@"pyoncord"];
+    NSURL *felitendoFolderURL = [documentDirectoryURL URLByAppendingPathComponent:@"felitendo"];
 
-    if (![fileManager fileExistsAtPath:pyoncordFolderURL.path]) {
-        [fileManager createDirectoryAtURL:pyoncordFolderURL
+    if (![fileManager fileExistsAtPath:felitendoFolderURL.path]) {
+        [fileManager createDirectoryAtURL:felitendoFolderURL
               withIntermediateDirectories:YES
                                attributes:nil
                                     error:nil];
     }
 
-    return pyoncordFolderURL;
+    return felitendoFolderURL;
 }
 
 UIColor *hexToUIColor(NSString *hex) {

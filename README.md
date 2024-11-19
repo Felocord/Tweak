@@ -1,6 +1,6 @@
 # FelocordTweak
 
-Tweak to inject [Bunny](https://github.com/pyoncord/Bunny) into Discord. Forked [VendettaTweak](https://github.com/vendetta-mod/VendettaTweak), modified to match with [BunnyXposed](https://github.com/pyoncord/BunnyXposed) behavior. \
+Tweak to inject [Felocord](https://github.com/felitendo/Felocord) into Discord. Forked [VendettaTweak](https://github.com/vendetta-mod/VendettaTweak), modified to match with [FelocordXposed](https://github.com/felitendo/FelocordXposed) behavior. \
 There are still slight differences between these two.
 
 > [!WARNING]
@@ -53,7 +53,7 @@ Builds can be found in the [Releases](https://github.com/Felocord/Tweak/releases
 
 ### Jailbroken
 
-1. Install Bunny by downloading the appropriate Debian package (or by building your own, see [Building](#building)) and adding it to your package manager. Use the file ending in `arm.deb` for rootful jailbreaks, and the file ending in `arm64.deb` for rootless jailbreaks.
+1. Install Felocord by downloading the appropriate Debian package (or by building your own, see [Building](#building)) and adding it to your package manager. Use the file ending in `arm.deb` for rootful jailbreaks, and the file ending in `arm64.deb` for rootless jailbreaks.
 
 ### Jailed
 
@@ -106,7 +106,7 @@ The resulting `.deb` files will be in the `packages` folder. As a reminder, `*ar
 
 ## Contributors
 
-[![Contributors](https://contrib.rocks/image?repo=bunny-mod/BunnyTweak)](https://github.com/bunny-mod/BunnyTweak/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=felocord-mod/FelocordTweak)](https://github.com/felocord-mod/FelocordTweak/graphs/contributors)
 
 <!-- @vladdy was here, battling all these steps so you don't have to. Have fun! :3 -->
 <!-- @castdrian also was here simplifying these steps immensely -->

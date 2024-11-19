@@ -148,7 +148,7 @@ static BOOL isSelfCall(void) {
 
 %hook NSFileManager
 - (NSURL *)containerURLForSecurityApplicationGroupIdentifier:(NSString *)groupIdentifier {
-    BunnyLog(@"containerURLForSecurityApplicationGroupIdentifier called! %@",
+    FelocordLog(@"containerURLForSecurityApplicationGroupIdentifier called! %@",
              groupIdentifier ?: @"nil");
 
     NSArray *paths  = [self URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
@@ -189,7 +189,7 @@ static BOOL isSelfCall(void) {
         NSString *currentBundleID   = [[NSBundle mainBundle] bundleIdentifier];
 
         if (provisioningAppID && ![provisioningAppID isEqualToString:currentBundleID]) {
-            BunnyLog(@"Intercepted UIDocumentPickerViewController presentation");
+            FelocordLog(@"Intercepted UIDocumentPickerViewController presentation");
             showBundleIDError(BundleIDErrorFiles);
             return;
         }
